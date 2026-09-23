@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Environment variables — NEVER commit these
+.env
+
+# Build output
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp

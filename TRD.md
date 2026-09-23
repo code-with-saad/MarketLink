@@ -5,7 +5,7 @@ change the schema or route contracts listed here without team agreement —
 other modules depend on them.
 
 ## 1. Tech Stack
-- Frontend: React (Vite) + Bootstrap
+- Frontend: React (Vite) + shadcn/ui + Tailwind
 - Backend: Node.js + Express.js
 - Database: MongoDB (Mongoose ODM)
 - Auth: JWT (access token in header)
