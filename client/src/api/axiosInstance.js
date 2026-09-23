@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Base axios instance — all API calls in every module should use this
+// Base axios instance: all API calls in every module should use this
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
   headers: {
@@ -8,7 +8,7 @@ const api = axios.create({
   },
 });
 
-// Request interceptor — attach JWT token if available
+// Request interceptor: attach JWT token if available
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -20,7 +20,8 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor — handle global 401 (token expired / invalid)
+// Response interceptor: handle global 401 (token expired / invalid)
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {

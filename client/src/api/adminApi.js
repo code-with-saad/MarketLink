@@ -1,5 +1,5 @@
-// adminApi.js — Dev 4 owns this file
 import api from './axiosInstance';
+
 
 // Dashboard
 export const getDashboard = () => api.get('/admin/dashboard');
