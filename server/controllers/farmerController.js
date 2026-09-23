@@ -1,7 +1,5 @@
-// farmerController.js — Dev 2 owns this file
-// Logic to be implemented in Phase 1
-
 const getProfile = async (req, res) => {
+
   res.status(501).json({ message: 'Not implemented yet' });
 };
 

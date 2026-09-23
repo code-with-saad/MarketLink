@@ -1,8 +1,8 @@
-// authController.js — Dev 1 owns this file
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const FarmerProfile = require('../models/FarmerProfile');
+
 
 const JWT_SECRET = process.env.JWT_SECRET || 'marketlink_jwt_secret';
 

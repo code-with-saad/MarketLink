@@ -130,6 +130,37 @@
 - ✅ Responsive design verified across mobile, tablet, and desktop breakpoints.
 
 ### Current status
-**Phase 2 complete. Ready for Phase 3 when instructed.**
+**Phase 2 complete.**
+
+---
+
+## [2026-09-23] [Phase 2.5] [COMPLETE] — Code Audit & Cleanup
+
+### What was completed
+
+**1. Removed Unused Context**
+- Deleted `client/src/context/AuthContext.js` (and empty directory) confirming zero lingering imports or references, reinforcing Redux Toolkit as the single source of truth for global state.
+
+**2. Standardized UI Copy & Eliminated Em Dashes**
+- Audited all `.jsx`, `.js`, and `.html` files for em dash (`—`) occurrences in UI copy.
+- Updated all 9 placeholder pages (`CustomerDashboard`, `Markets`, `Products`, `CustomerOrders`, `FarmerDashboard`, `FarmerStock`, `FarmerOrders`, `AdminDashboard`, `AdminFarmers`, `AdminMarkets`) with layout wrappers, meaningful descriptions, and clean typography.
+- Updated document title in `client/index.html` and cleaned up internal API comments.
+
+**3. Cleaned Stale Dev Ownership Comments**
+- Removed "Dev N owns this file" comments across all API service layers and backend controllers:
+  - `client/src/api/authApi.js`, `farmerApi.js`, `customerApi.js`, `adminApi.js`
+  - `server/controllers/authController.js`, `farmerController.js`, `customerController.js`, `adminController.js`
+
+**4. Removed Hardcoded Sample Products from Components**
+- Removed hardcoded `sampleProducts` from `client/src/pages/Home.jsx`.
+- Connected the showcase section to real `getProducts` API endpoint with clean loading spinner state and an informative empty state ("New listings coming soon") for when no products are available.
+
+### Test results
+- ✅ Verified 0 occurrences of em dash across all client files.
+- ✅ Client: `npm run build` exits 0 with zero errors.
+
+### Current status
+**Phase 2.5 complete. Ready for Phase 3 when instructed.**
+
 
 

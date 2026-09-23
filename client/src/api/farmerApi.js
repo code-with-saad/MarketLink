@@ -1,5 +1,5 @@
-// farmerApi.js — Dev 2 owns this file
 import api from './axiosInstance';
+
 
 // Profile
 export const getProfile = () => api.get('/farmer/profile');

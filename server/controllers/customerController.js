@@ -1,7 +1,5 @@
-// customerController.js — Dev 3 owns this file
-// Logic to be implemented in Phase 1
-
 const getMarkets = async (req, res) => {
+
   res.status(501).json({ message: 'Not implemented yet' });
 };
 

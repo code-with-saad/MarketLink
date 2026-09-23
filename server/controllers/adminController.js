@@ -1,7 +1,5 @@
-// adminController.js — Dev 4 owns this file
-// Logic to be implemented in Phase 1
-
 const getDashboard = async (req, res) => {
+
   // Platform-wide metrics
   res.status(501).json({ message: 'Not implemented yet' });
 };

@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchInput } from "@/components/ui/search-input";
+import { getProducts } from "@/api/customerApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
   faLeaf, 
@@ -16,50 +17,46 @@ import {
   faStar, 
   faShieldAlt,
   faSeedling,
-  faCalendarCheck
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const sampleProducts = [
-    {
-      id: "1",
-      name: "Crisp Heirloom Carrots",
-      category: "Vegetables",
-      stall: "Sunny Meadows Organic Farm",
-      market: "Greenfield Saturday Market",
-      price: "$4.50",
-      unit: "bunch",
-      rating: 4.9,
-      status: "completed",
-      image: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=500&auto=format&fit=crop&q=80",
-    },
-    {
-      id: "2",
-      name: "Wildflower Raw Honey Jar",
-      category: "Pantry",
-      stall: "Valley Apiaries",
-      market: "Highland Community Market",
-      price: "$12.00",
-      unit: "16 oz jar",
-      rating: 5.0,
-      status: "ready",
-      image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=500&auto=format&fit=crop&q=80",
-    },
-    {
-      id: "3",
-      name: "Fresh Farmstead Goat Cheese",
-      category: "Dairy",
-      stall: "Oak Ridge Dairy Stalls",
-      market: "Greenfield Saturday Market",
-      price: "$8.25",
-      unit: "wheel",
-      rating: 4.8,
-      status: "accepted",
-      image: "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=500&auto=format&fit=crop&q=80",
-    },
-  ];
+  useEffect(() => {
+    let isMounted = true;
+    const fetchFeaturedProducts = async () => {
+      try {
+        setIsLoading(true);
+        const res = await getProducts();
+        if (isMounted && res.data && Array.isArray(res.data.products)) {
+          setProducts(res.data.products);
+        } else if (isMounted && Array.isArray(res.data)) {
+          setProducts(res.data);
+        }
+      } catch (err) {
+        // Endpoint may not have data or may return 501 in early phases
+        if (isMounted) setProducts([]);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/customer/products?search=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
 
   return (
     <Layout>
@@ -81,7 +78,7 @@ const Home = () => {
             </p>
 
             {/* Quick Search */}
-            <div className="pt-2 max-w-lg">
+            <form onSubmit={handleSearchSubmit} className="pt-2 max-w-lg">
               <SearchInput 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -89,7 +86,7 @@ const Home = () => {
                 placeholder="Search carrots, artisan cheese, honey..."
                 className="shadow-lg"
               />
-            </div>
+            </form>
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -142,7 +139,7 @@ const Home = () => {
           </Card>
         </div>
 
-        {/* Sample Listings using Shared Components */}
+        {/* Listings Section */}
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-earth-200/80 pb-4">
             <div>
@@ -155,61 +152,71 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sampleProducts.map((item) => (
-              <Card key={item.id} className="overflow-hidden flex flex-col group">
-                {/* Image & Category Pill */}
-                <div className="relative h-48 bg-earth-100 overflow-hidden">
-                  <img 
-                    src={item.image} 
-                    alt={item.name} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className="px-2.5 py-1 bg-forest-950/80 backdrop-blur-sm text-accent-lime text-xs font-bold rounded-lg shadow-sm">
-                      {item.category}
-                    </span>
+          {isLoading ? (
+            <div className="p-12 text-center text-earth-700 flex flex-col items-center gap-3">
+              <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-forest-800" />
+              <p className="text-sm font-medium">Loading fresh products from local stalls...</p>
+            </div>
+          ) : products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {products.map((item) => (
+                <Card key={item._id || item.id} className="overflow-hidden flex flex-col group">
+                  <div className="relative h-48 bg-earth-100 overflow-hidden">
+                    {item.image_url ? (
+                      <img 
+                        src={item.image_url} 
+                        alt={item.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-warm-cream-dark text-earth-500">
+                        <FontAwesomeIcon icon={faLeaf} className="text-3xl text-forest-700/40" />
+                      </div>
+                    )}
+                    <div className="absolute top-3 left-3">
+                      <span className="px-2.5 py-1 bg-forest-950/80 backdrop-blur-sm text-accent-lime text-xs font-bold rounded-lg shadow-sm">
+                        {item.category || "Produce"}
+                      </span>
+                    </div>
                   </div>
-                  <div className="absolute top-3 right-3">
-                    <StatusBadge status={item.status} />
-                  </div>
-                </div>
 
-                <CardHeader className="p-5 pb-2">
-                  <div className="flex items-center gap-1.5 text-xs text-earth-500 mb-1">
-                    <FontAwesomeIcon icon={faStore} className="text-forest-700" />
-                    <span className="truncate">{item.stall}</span>
-                  </div>
-                  <CardTitle className="text-lg group-hover:text-forest-800 transition-colors">
-                    {item.name}
-                  </CardTitle>
-                  <CardDescription className="flex items-center gap-1 text-xs text-earth-500 pt-1">
-                    <FontAwesomeIcon icon={faMapMarkerAlt} className="text-earth-400" />
-                    <span>{item.market}</span>
-                  </CardDescription>
-                </CardHeader>
+                  <CardHeader className="p-5 pb-2">
+                    <CardTitle className="text-lg group-hover:text-forest-800 transition-colors">
+                      {item.name}
+                    </CardTitle>
+                    {item.description && (
+                      <CardDescription className="text-xs text-earth-500 line-clamp-2 pt-1">
+                        {item.description}
+                      </CardDescription>
+                    )}
+                  </CardHeader>
 
-                <CardContent className="p-5 pt-2 flex-1">
-                  <div className="flex items-center gap-1 text-amber-500 text-xs font-semibold">
-                    <FontAwesomeIcon icon={faStar} />
-                    <span>{item.rating}</span>
-                    <span className="text-earth-500 font-normal">(Verified buyer feedback)</span>
-                  </div>
-                </CardContent>
-
-                <CardFooter className="p-5 pt-3 border-t border-earth-100 flex items-center justify-between">
-                  <div>
-                    <span className="font-serif text-xl font-extrabold text-forest-950">{item.price}</span>
-                    <span className="text-xs text-earth-500 ml-1">/ {item.unit}</span>
-                  </div>
-                  <Button variant="primary" size="sm" className="shadow-sm">
-                    <FontAwesomeIcon icon={faShoppingBasket} />
-                    <span>Pre-Order</span>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+                  <CardFooter className="p-5 pt-3 border-t border-earth-100 flex items-center justify-between mt-auto">
+                    <div>
+                      <span className="font-serif text-xl font-extrabold text-forest-950">${item.price}</span>
+                      {item.unit && <span className="text-xs text-earth-500 ml-1">/ {item.unit}</span>}
+                    </div>
+                    <Link to={`/customer/products`}>
+                      <Button variant="primary" size="sm" className="shadow-sm">
+                        <FontAwesomeIcon icon={faShoppingBasket} />
+                        <span>Order</span>
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Card className="p-12 text-center bg-warm-surface border-dashed border-earth-300 space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-warm-cream-dark text-forest-800 flex items-center justify-center text-xl mx-auto">
+                <FontAwesomeIcon icon={faLeaf} />
+              </div>
+              <h3 className="font-serif text-lg font-bold text-forest-950">New listings coming soon</h3>
+              <p className="text-xs sm:text-sm text-earth-700 max-w-md mx-auto">
+                Local farmers are currently updating their harvest availability and pickup schedules. Check back soon for fresh arrivals.
+              </p>
+            </Card>
+          )}
         </div>
 
         {/* Order Status Demo Showcase */}
@@ -234,3 +241,4 @@ const Home = () => {
 };
 
 export default Home;
+
