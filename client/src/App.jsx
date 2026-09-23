@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 // Shared pages
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Customer pages
 import CustomerDashboard from './pages/customer/CustomerDashboard';
@@ -27,28 +28,38 @@ function App() {
         {/* Default redirect */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Auth */}
+        {/* Public Auth routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Customer section */}
-        <Route path="/customer/dashboard" element={<CustomerDashboard />} />
-        <Route path="/customer/markets" element={<Markets />} />
-        <Route path="/customer/products" element={<Products />} />
-        <Route path="/customer/orders" element={<CustomerOrders />} />
+        {/* Protected Customer section */}
+        <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
+          <Route path="/customer/dashboard" element={<CustomerDashboard />} />
+          <Route path="/customer/markets" element={<Markets />} />
+          <Route path="/customer/products" element={<Products />} />
+          <Route path="/customer/orders" element={<CustomerOrders />} />
+        </Route>
 
-        {/* Farmer section */}
-        <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
-        <Route path="/farmer/stock" element={<FarmerStock />} />
-        <Route path="/farmer/orders" element={<FarmerOrders />} />
+        {/* Protected Farmer section */}
+        <Route element={<ProtectedRoute allowedRoles={['farmer']} />}>
+          <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
+          <Route path="/farmer/stock" element={<FarmerStock />} />
+          <Route path="/farmer/orders" element={<FarmerOrders />} />
+        </Route>
 
-        {/* Admin section */}
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/farmers" element={<AdminFarmers />} />
-        <Route path="/admin/markets" element={<AdminMarkets />} />
+        {/* Protected Admin section */}
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/farmers" element={<AdminFarmers />} />
+          <Route path="/admin/markets" element={<AdminMarkets />} />
+        </Route>
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
+

@@ -53,4 +53,44 @@
 - bcrypt required `npm approve-scripts bcrypt` due to npm's allow-scripts policy
 
 ### Current status
-**Phase 0 complete. Ready for Phase 1 when instructed.**
+**Phase 0 complete.**
+
+---
+
+## [2026-09-23] [Phase 1] [COMPLETE] — Authentication & Role Middleware
+
+### What was completed
+
+**Server (`server/`)**
+- `middleware/authMiddleware.js`:
+  - `verifyToken`: Validates Bearer JWT header, extracts payload, attaches `req.user = { user_id, role }`.
+  - `requireRole(...roles)`: Enforces role permissions supporting multiple allowed roles.
+- `controllers/authController.js`:
+  - `register`: Validates required fields, role validation (`customer`, `farmer`, `admin`), role-specific fields (`stall_name` for farmers, `address` for customers), duplicate email check, bcrypt password hashing (10 rounds), User creation + linked FarmerProfile creation for farmers, and JWT token issuance.
+  - `login`: Validates credentials, checks suspension status, verifies bcrypt hash, fetches farmer profile metadata if applicable, issues 7-day JWT token.
+  - `getMe`: Protected endpoint returning user details and linked farmer profile without sensitive hash.
+
+**Client (`client/`)**
+- `store/slices/authSlice.js`:
+  - Extended auth state with `user`, `token`, `isLoading`, `error`.
+  - Added `updateUser`, `setCredentials`, `logout`, selector helpers (`selectIsAuthenticated`, `selectUserRole`, `selectCurrentUser`, etc.).
+  - Preserves token and user state in `localStorage`.
+- `components/ProtectedRoute.jsx`:
+  - Protected route wrapper guarding sub-routes based on token presence and user role permissions.
+- `pages/Login.jsx`:
+  - Responsive branded login UI using Tailwind + shadcn Button + FontAwesome icons.
+  - Handles auth submission, loading state, error alerts, and dynamic role-based dashboard redirects (`/customer/dashboard`, `/farmer/dashboard`, `/admin/dashboard`).
+- `pages/Register.jsx`:
+  - Interactive multi-role registration interface with tab selector (`Customer`, `Farmer`, `Admin`).
+  - Dynamic role-specific fields (Stall name for farmers, address for customers).
+  - Validation handling, loading indicators, and post-registration routing.
+- `App.jsx`:
+  - Secured customer, farmer, and admin routes behind `ProtectedRoute` with specific role allowances.
+
+### Test results
+- ✅ Client: `npm run build` exits 0 with all modules compiled successfully.
+- ✅ Server syntax check passes across all auth routes, middleware, and controllers.
+
+### Current status
+**Phase 1 complete. Ready for Phase 2 when instructed.**
+

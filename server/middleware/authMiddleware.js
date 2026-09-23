@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'marketlink_jwt_secret');
     req.user = decoded; // { user_id, role }
     next();
   } catch (err) {
@@ -22,14 +22,19 @@ const verifyToken = (req, res, next) => {
 };
 
 /**
- * requireRole(role) — must be used after verifyToken.
+ * requireRole(...roles) — must be used after verifyToken.
+ * Accepts one or multiple allowed roles.
  * Example: router.get('/profile', verifyToken, requireRole('farmer'), ...)
+ * Example: router.get('/manage', verifyToken, requireRole('farmer', 'admin'), ...)
  */
-const requireRole = (role) => (req, res, next) => {
-  if (req.user?.role !== role) {
-    return res.status(403).json({ message: `Access restricted to ${role} role` });
+const requireRole = (...roles) => (req, res, next) => {
+  if (!req.user || !roles.includes(req.user.role)) {
+    return res.status(403).json({ 
+      message: `Access forbidden: requires ${roles.join(' or ')} role` 
+    });
   }
   next();
 };
 
 module.exports = { verifyToken, requireRole };
+
