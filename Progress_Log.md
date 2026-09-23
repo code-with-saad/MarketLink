@@ -92,5 +92,44 @@
 - ✅ Server syntax check passes across all auth routes, middleware, and controllers.
 
 ### Current status
-**Phase 1 complete. Ready for Phase 2 when instructed.**
+**Phase 1 complete.**
+
+---
+
+## [2026-09-23] [Phase 2] [COMPLETE] — Shared UI Shell & Design System ("eGreen Basket")
+
+### What was completed
+
+**Design System & Theme Tokens**
+- Integrated Google Fonts: `Playfair Display` (warm serif for headings) and `Plus Jakarta Sans` (clean sans-serif for body).
+- Configured CSS theme tokens in `client/src/index.css` matching the SRS "eGreen Basket" theme:
+  - Primary: Deep forest green (`--forest-950`, `--forest-900`, `--forest-800`).
+  - Accent: Lime / chartreuse green-yellow (`--accent-lime`, `--accent-lime-hover`).
+  - Background: Warm cream & off-white (`--warm-cream`, `--warm-surface`).
+  - Earthy neutrals: (`--earth-900`, `--earth-700`, `--earth-500`, `--earth-100`).
+  - Order status palette: Placed (Blue), Accepted (Amber), Ready (Purple), Completed (Emerald), Cancelled (Rose).
+
+**Shared UI Components (`client/src/components/ui/`)**
+- `button.jsx`: Primary (lime), secondary (forest), outline, ghost, and size variants with active micro-animations.
+- `card.jsx`: Reusable card primitives with `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, and `CardFooter`.
+- `status-badge.jsx`: Order status badges with matching FontAwesome icons and distinct status color schemes.
+- `search-input.jsx`: Clean search bar with FontAwesome search icon and clear button.
+
+**Shared Layout Components (`client/src/components/layout/`)**
+- `AnnouncementBanner.jsx`: Dismissible top notification banner with seasonal harvest alerts.
+- `Navbar.jsx`: Responsive header with eGreen Basket branding, navigation links (Shop, Markets, Farmers, Map, About, Contact), interactive search, notifications, and role-aware profile dropdown / auth triggers.
+- `Footer.jsx`: Multi-column footer containing brand description, shop links, farmer resources, contact details, and OpenStreetMap attribution.
+- `Layout.jsx`: Master responsive layout wrapper providing consistent structure across the application.
+
+**Showcase & Verification**
+- Created `client/src/pages/Home.jsx` demonstrating the full UI shell, hero section, card grid, search bar, and status badges.
+- Updated `client/src/App.jsx` with `/` landing showcase route.
+
+### Test results
+- ✅ Client: `npm run build` exits 0 with all modules compiled successfully.
+- ✅ Responsive design verified across mobile, tablet, and desktop breakpoints.
+
+### Current status
+**Phase 2 complete. Ready for Phase 3 when instructed.**
+
 

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Shared pages
+import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -25,12 +26,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* Public Landing & Showcase */}
+        <Route path="/" element={<Home />} />
 
         {/* Public Auth routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
 
         {/* Protected Customer section */}
         <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
