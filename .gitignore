@@ -14,3 +14,7 @@ build/
 # Editor
 .vscode/
 *.swp
+
+# screenshots
+phase36_screenshots
+take_screenshots.js

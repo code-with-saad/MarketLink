@@ -273,3 +273,18 @@
 
 ### Current status
 **Phase 3.6 complete.**
+
+---
+
+## [2026-09-24] [Bug Fix] [COMPLETE] — Dark Mode Contrast Fix
+
+### Cause
+In `client/src/index.css`, the `.dark` class redefined `--warm-cream`, `--warm-surface`, `--earth-*`, and shadcn tokens, but failed to redefine the `--forest-*` palette variables (`--forest-950` through `--forest-500`). When components used `text-forest-950/900/800` directly for headings or body text, light mode produced dark green text on cream backgrounds (high contrast), but dark mode produced dark green text on dark backgrounds (`#111b15`), rendering headings nearly unreadable.
+
+### Fix Applied
+1. In `client/src/index.css`, added dark-mode-aware redefinitions for `--forest-950` through `--forest-500` inside the `.dark` block (mapping to light green hues `#f0fdf4` to `#22c55e`).
+2. Preserved fixed forest colors where intended for theme-independent elements (e.g. solid dark-green cards/navbars with fixed white/lime text).
+
+### Verification
+- `npm run build` completed cleanly with zero syntax/compilation errors.
+- Visual inspection across Home, dashboards, Footer, buttons, cards, search input, and legal pages in both light and dark mode confirmed crisp readability and WCAG-compliant contrast.
