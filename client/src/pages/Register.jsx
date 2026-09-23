@@ -109,8 +109,8 @@ const Register = () => {
           <p className="text-sm text-gray-500 mt-1">Join the MarketLink Community</p>
         </div>
 
-        {/* Role Selector Tabs */}
-        <div className="grid grid-cols-3 gap-2 p-1 bg-gray-100/80 rounded-xl mb-6">
+        {/* Role Selector Tabs - Customer and Farmer only */}
+        <div className="grid grid-cols-2 gap-2 p-1 bg-gray-100/80 rounded-xl mb-6">
           <button
             type="button"
             onClick={() => handleRoleSelect('customer')}
@@ -135,19 +135,8 @@ const Register = () => {
             <FontAwesomeIcon icon={faTractor} className="text-base" />
             <span>Farmer</span>
           </button>
-          <button
-            type="button"
-            onClick={() => handleRoleSelect('admin')}
-            className={`py-2 px-3 text-xs font-semibold rounded-lg flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
-              role === 'admin'
-                ? 'bg-white text-emerald-700 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <FontAwesomeIcon icon={faUserShield} className="text-base" />
-            <span>Admin</span>
-          </button>
         </div>
+
 
         {/* Error Alert */}
         {error && (

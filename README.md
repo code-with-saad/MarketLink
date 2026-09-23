@@ -6,22 +6,22 @@ map-based discovery.
 
 See [`PRD.md`](./PRD.md) for the problem/solution overview and
 [`TRD.md`](./TRD.md) for schema, API routes, and technical decisions.
-Daily progress is tracked in [`Progress_Log.md`](./Progress_Log.md).
+Daily progress is tracked in [`progress.md`](./progress.md).
 
-## Team & Module Ownership
-| Dev | Module | Routes prefix |
-|---|---|---|
-| Dev 1 (lead) | Auth + shared schema/middleware | `/api/auth` |
-| Dev 2 | Farmer | `/api/farmer` |
-| Dev 3 | Customer | `/api/customer` |
-| Dev 4 | Admin + Maps | `/api/admin` |
+## Module Map
+| Module | Routes prefix |
+|---|---|
+| Auth + shared schema/middleware | `/api/auth` |
+| Farmer | `/api/farmer` |
+| Customer | `/api/customer` |
+| Admin + Maps | `/api/admin` |
 
 Before writing any code, read `TRD.md` fully — it locks the schema and route
-contracts. Do not change another dev's files without asking in the group
-first.
+contracts, including Section 8 (Cross-Cutting Requirements), which applies
+to every page/form regardless of module.
 
 ## Tech Stack
-- Frontend: React (Vite) + shadcn/ui + Tailwind
+- Frontend: React (Vite) + Tailwind + shadcn/ui
 - Backend: Node.js + Express.js
 - Database: MongoDB (Mongoose)
 - Auth: JWT
@@ -94,6 +94,15 @@ Give your AI tool `PRD.md` and `TRD.md` for context, plus tell it explicitly:
 
 You are expected to understand and be able to explain any code you submit,
 regardless of what tool generated it — this may come up in evaluation.
+
+## Creating the First Admin Account
+Admin accounts are never created via public registration. After setting
+`ADMIN_EMAIL` and `ADMIN_PASSWORD` in `server/.env`, run:
+```bash
+cd server
+node scripts/seedAdmin.js
+```
+This creates a single admin user if one doesn't already exist.
 
 ## Deliverables Checklist (per SRS)
 - [ ] All SRS-mandatory functional requirements working

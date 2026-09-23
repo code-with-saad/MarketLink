@@ -160,7 +160,45 @@
 - ✅ Client: `npm run build` exits 0 with zero errors.
 
 ### Current status
-**Phase 2.5 complete. Ready for Phase 3 when instructed.**
+**Phase 2.5 complete.**
+
+---
+
+## [2026-09-24] [Phase 3] [COMPLETE] - Auth Hardening
+
+### What was completed
+
+**Part A: Removed Public Admin Registration**
+- Client: Removed the "Admin" role tab from `client/src/pages/Register.jsx` (only Customer and Farmer remain selectable).
+- Server: Updated `server/controllers/authController.js` to reject any public registration with `role: 'admin'`, returning a 403 status code with message `"Admin registration is not allowed through public signup"`.
+
+**Part B: Admin Seed Script & Docs**
+- Created standalone script `server/scripts/seedAdmin.js` reading `ADMIN_EMAIL` and `ADMIN_PASSWORD` from `.env`, creating or updating the admin user with hashed password and `status: 'active'`.
+- Updated `.env.example` with placeholders for `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, and `SMTP_FROM`.
+- Verified `README.md` includes instructions under "Creating the First Admin Account".
+
+**Part C: Farmer Approval Status Workflow**
+- Updated `server/models/User.js` status enum to `['pending', 'active', 'suspended']`.
+- Updated `server/controllers/authController.js` registration logic so new farmers default to status `"pending"`, while new customers default to `"active"`.
+- Added `requireActiveUser` middleware in `server/middleware/authMiddleware.js` and wired it into `server/routes/farmerRoutes.js` to protect product and order operations while allowing pending farmers to log in and manage their profile.
+
+**Part D: Forgot Password & Password Reset (Nodemailer + OTP)**
+- Extended `User` model with `otp_code`, `otp_expires_at`, `otp_resend_count`, and `otp_last_sent_at`.
+- Created `server/config/mailer.js` configured with Nodemailer transport and dev console fallback when SMTP is unconfigured or in local testing.
+- Implemented `POST /api/auth/forgot-password` (generates 6-digit OTP with 10-minute expiry) and `POST /api/auth/reset-password` (validates OTP, verifies expiry, securely updates bcrypt password hash).
+- Created frontend views `client/src/pages/ForgotPassword.jsx` and `client/src/pages/ResetPassword.jsx`, wired routes in `client/src/App.jsx`, linked from `client/src/pages/Login.jsx`, and added endpoints to `client/src/api/authApi.js`.
+
+### Test results
+- Passed: Public admin registration rejected with 403 on API and absent in UI.
+- Passed: Admin seed script idempotently creates/updates admin user in MongoDB.
+- Passed: Farmer registered with `status: 'pending'`, permitted to access profile, blocked with 403 from creating products (`"Your account is pending admin approval"`).
+- Passed: Customer registered with immediate `status: 'active'`.
+- Passed: Forgot password OTP generated and delivered, password reset successfully with OTP, previous password rejected, new password authenticated.
+- Passed: Client build (`npm run build`) succeeded with 0 errors.
+
+### Current status
+**Phase 3 complete.**
+
 
 
 

@@ -56,6 +56,9 @@ Customers:
   CRUD, content moderation, reports
 - Notifications (email/in-app for order confirmation & ready-for-pickup)
 - About Us / Contact Us static pages (Contact Us includes a map)
+- Privacy Policy / Terms of Service pages, linked from the footer and
+  required (via consent checkbox) at registration
+- Dark/light mode toggle, accessible from the navbar on every page
 
 ## 7. Optional Features (per SRS — only after core is done and tested)
 - AI chatbot assistant (market timings, Farmer availability, pickup windows,
@@ -70,7 +73,7 @@ Customers:
   for all roles, demo video, sitemap
 
 ## 9. Tech Stack (locked in TRD)
-- Frontend: React (Vite) + Bootstrap/Tailwind
+- Frontend: React (Vite) + Tailwind + shadcn/ui
 - Backend: Node.js + Express.js
 - Database: MongoDB
 - Maps: OpenStreetMap + Leaflet.js
