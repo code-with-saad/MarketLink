@@ -11,7 +11,7 @@ const CustomerOrders = () => (
           <FontAwesomeIcon icon={faBoxOpen} />
         </div>
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-forest-950">My Orders</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">My Orders</h1>
           <p className="text-xs sm:text-sm text-earth-700">Track current pre-orders, pickup windows, and order history.</p>
         </div>
       </div>

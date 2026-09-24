@@ -18,7 +18,7 @@ const ComingSoon = () => (
       </div>
 
       <div className="space-y-3">
-        <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-forest-950">Coming Soon</h1>
+        <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-foreground">Coming Soon</h1>
         <p className="text-earth-700 text-sm sm:text-base leading-relaxed max-w-sm mx-auto">
           This feature is being cultivated and will be ready for harvest in an upcoming release. Check back soon.
         </p>

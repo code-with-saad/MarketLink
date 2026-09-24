@@ -41,7 +41,7 @@ const StepIndicator = ({ currentStep }) => (
           </div>
           <span
             className={`text-[10px] font-semibold uppercase tracking-wide ${
-              step === currentStep ? 'text-forest-900' : step < currentStep ? 'text-forest-700' : 'text-gray-400'
+              step === currentStep ? 'text-foreground' : step < currentStep ? 'text-primary' : 'text-earth-500'
             }`}
           >
             {step === 1 ? 'Email' : step === 2 ? 'Code' : 'Password'}

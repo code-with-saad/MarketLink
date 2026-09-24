@@ -11,7 +11,7 @@ const FarmerOrders = () => (
           <FontAwesomeIcon icon={faClipboardList} />
         </div>
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-forest-950">Farmer Orders</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">Farmer Orders</h1>
           <p className="text-xs sm:text-sm text-earth-700">Review customer orders, accept items, and set pickup statuses.</p>
         </div>
       </div>

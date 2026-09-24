@@ -11,14 +11,14 @@ const PrivacyPolicy = () => (
           <FontAwesomeIcon icon={faShieldAlt} />
         </div>
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-forest-950">Privacy Policy</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">Privacy Policy</h1>
           <p className="text-xs text-earth-500 mt-0.5">Last updated: September 2026</p>
         </div>
       </div>
 
       <div className="prose prose-sm max-w-none space-y-6 text-earth-700 leading-relaxed">
         <section className="space-y-3">
-          <h2 className="font-serif text-xl font-bold text-forest-950">1. Introduction</h2>
+          <h2 className="font-serif text-xl font-bold text-foreground">1. Introduction</h2>
           <p>
             MarketLink ("we", "our", or "us") operates an online platform that connects local farmers, market organizers, and consumers. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform.
           </p>
@@ -28,7 +28,7 @@ const PrivacyPolicy = () => (
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-xl font-bold text-forest-950">2. Information We Collect</h2>
+          <h2 className="font-serif text-xl font-bold text-foreground">2. Information We Collect</h2>
           <p>We collect information you provide directly to us, including:</p>
           <ul className="list-disc pl-5 space-y-1.5">
             <li>Account registration data: name, email address, password (stored as a cryptographic hash), role (customer or farmer), and contact information.</li>
@@ -42,7 +42,7 @@ const PrivacyPolicy = () => (
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-xl font-bold text-forest-950">3. How We Use Your Information</h2>
+          <h2 className="font-serif text-xl font-bold text-foreground">3. How We Use Your Information</h2>
           <p>We use the information we collect to:</p>
           <ul className="list-disc pl-5 space-y-1.5">
             <li>Operate, maintain, and improve the MarketLink platform.</li>
@@ -56,21 +56,21 @@ const PrivacyPolicy = () => (
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-xl font-bold text-forest-950">4. Data Retention</h2>
+          <h2 className="font-serif text-xl font-bold text-foreground">4. Data Retention</h2>
           <p>
             We retain your account information for as long as your account is active or as needed to provide services. If you request account deletion, we will remove your personal data within 30 days, except where retention is required by law or for legitimate business purposes such as fraud prevention.
           </p>
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-xl font-bold text-forest-950">5. Security</h2>
+          <h2 className="font-serif text-xl font-bold text-foreground">5. Security</h2>
           <p>
             We implement appropriate technical and organizational measures to protect your personal information. Passwords are stored only as bcrypt hashes and are never recoverable in plain text. Authentication sessions are managed via short-lived JSON Web Tokens. Despite these measures, no system is completely secure, and we cannot guarantee the absolute security of your information.
           </p>
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-xl font-bold text-forest-950">6. Your Rights</h2>
+          <h2 className="font-serif text-xl font-bold text-foreground">6. Your Rights</h2>
           <p>Depending on your jurisdiction, you may have the right to:</p>
           <ul className="list-disc pl-5 space-y-1.5">
             <li>Access or download the personal data we hold about you.</li>
@@ -82,14 +82,14 @@ const PrivacyPolicy = () => (
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-xl font-bold text-forest-950">7. Changes to This Policy</h2>
+          <h2 className="font-serif text-xl font-bold text-foreground">7. Changes to This Policy</h2>
           <p>
             We may update this Privacy Policy from time to time. When we do, we will revise the date at the top of this page and, where appropriate, notify users via email or a prominent notice on the platform.
           </p>
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-xl font-bold text-forest-950">8. Contact Us</h2>
+          <h2 className="font-serif text-xl font-bold text-foreground">8. Contact Us</h2>
           <p>
             If you have questions or concerns about this Privacy Policy, please contact us at: support@marketlink.local
           </p>
@@ -99,7 +99,7 @@ const PrivacyPolicy = () => (
       <div className="pt-4 border-t border-earth-100">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-forest-800 hover:text-forest-950 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:opacity-80 transition-colors"
         >
           <FontAwesomeIcon icon={faArrowLeft} className="text-xs" />
           <span>Back to Home</span>

@@ -11,7 +11,7 @@ const FarmerDashboard = () => (
           <FontAwesomeIcon icon={faTractor} />
         </div>
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-forest-950">Farmer Dashboard</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">Farmer Dashboard</h1>
           <p className="text-xs sm:text-sm text-earth-700">Manage stall profiles, daily inventory, and pre-orders.</p>
         </div>
       </div>

@@ -11,7 +11,7 @@ const AdminFarmers = () => (
           <FontAwesomeIcon icon={faUsersCog} />
         </div>
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-forest-950">Farmer Moderation</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">Farmer Moderation</h1>
           <p className="text-xs sm:text-sm text-earth-700">Approve, verify, or suspend registered farmer stall profiles.</p>
         </div>
       </div>

@@ -11,7 +11,7 @@ const AdminDashboard = () => (
           <FontAwesomeIcon icon={faUserShield} />
         </div>
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-forest-950">Admin Dashboard</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">Admin Dashboard</h1>
           <p className="text-xs sm:text-sm text-earth-700">Platform oversight, system metrics, and administrative actions.</p>
         </div>
       </div>

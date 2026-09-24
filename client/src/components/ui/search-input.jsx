@@ -16,14 +16,14 @@ const SearchInput = forwardRef(
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full h-11 pl-10 pr-10 bg-warm-surface border border-earth-300/80 rounded-xl text-sm text-forest-950 placeholder:text-earth-500 focus:outline-none focus:ring-2 focus:ring-forest-800/30 focus:border-forest-800 transition-all shadow-inner"
+          className="w-full h-11 pl-10 pr-10 bg-warm-surface border border-earth-300/80 rounded-xl text-sm text-foreground placeholder:text-earth-500 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all shadow-inner"
           {...props}
         />
         {value && onClear && (
           <button
             type="button"
             onClick={onClear}
-            className="absolute right-3 p-1 text-earth-500 hover:text-forest-900 rounded-md transition-colors"
+            className="absolute right-3 p-1 text-earth-500 hover:text-foreground rounded-md transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-xs" />
           </button>

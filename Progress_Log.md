@@ -249,8 +249,9 @@
 
 **Part F — Dark/Light Mode**
 - `useDarkMode.js` hook: reads `localStorage` key `ml-theme`, falls back to `prefers-color-scheme` on first visit, applies/removes `.dark` class on `<html>`, persists choice on every toggle.
-- `index.css`: `.dark` CSS variable overrides added for all palette tokens (warm-cream, warm-surface, earth tones, shadcn tokens). Body gets `transition: background-color 0.2s ease` for smooth switching.
-- `Navbar.jsx`: dark/light toggle button (FontAwesome `faSun` / `faMoon`) added to both desktop and mobile header.
+- `index.css`: `--forest-*` tokens maintained as fixed brand colors for constant dark green backgrounds (Navbar, Hero container, Footer). Reverted global token overrides that inverted these backgrounds.
+- Theme-aware text styling: updated all page headings, card titles (`card.jsx`), links, button variants (`button.jsx`), and search input (`search-input.jsx`) across all pages to use semantic theme tokens (`text-foreground`, `text-card-foreground`, `text-primary`, `border-primary`) so text cleanly toggles between light and dark modes while keeping fixed brand backgrounds intact.
+- `Navbar.jsx`: dark/light toggle button (FontAwesome `faSun` / `faMoon`) added to desktop and mobile header.
 
 **Part G — Footer and UI Cleanup**
 - `Home.jsx`: "Design System Status Indicators" block removed. Unused `StatusBadge`, `CardContent` imports removed.

@@ -11,7 +11,7 @@ const Products = () => (
           <FontAwesomeIcon icon={faShoppingBag} />
         </div>
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-forest-950">Marketplace Products</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">Marketplace Products</h1>
           <p className="text-xs sm:text-sm text-earth-700">Browse seasonal produce, dairy, bakery, and specialty items.</p>
         </div>
       </div>

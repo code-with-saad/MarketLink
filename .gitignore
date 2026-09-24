@@ -18,3 +18,4 @@ build/
 # screenshots
 phase36_screenshots
 take_screenshots.js
+audit_pages.js

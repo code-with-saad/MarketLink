@@ -83,13 +83,6 @@
     --earth-300: #4a4340;
     --earth-100: #2c2522;
 
-    --forest-950: #f0fdf4;
-    --forest-900: #dcfce7;
-    --forest-800: #bbf7d0;
-    --forest-700: #86efac;
-    --forest-600: #4ade80;
-    --forest-500: #22c55e;
-
     --background: oklch(0.12 0.025 140);
     --foreground: oklch(0.92 0.02 85);
     --card: oklch(0.15 0.03 140);

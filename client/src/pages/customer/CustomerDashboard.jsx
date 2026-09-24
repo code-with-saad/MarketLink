@@ -11,7 +11,7 @@ const CustomerDashboard = () => (
           <FontAwesomeIcon icon={faShoppingBasket} />
         </div>
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-forest-950">Customer Dashboard</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">Customer Dashboard</h1>
           <p className="text-xs sm:text-sm text-earth-700">Manage your pre-orders, saved stalls, and market pickups.</p>
         </div>
       </div>
