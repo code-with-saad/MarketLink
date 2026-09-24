@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { 
-  selectCurrentUser, 
-  selectIsAuthenticated, 
-  logout 
+import {
+  selectCurrentUser,
+  selectIsAuthenticated,
+  logout,
 } from "@/store/slices/authSlice";
 import { Button } from "@/components/ui/button";
+import useDarkMode from "@/hooks/useDarkMode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLeaf,
@@ -22,7 +23,9 @@ import {
   faUsers,
   faInfoCircle,
   faEnvelope,
-  faTachometerAlt
+  faTachometerAlt,
+  faSun,
+  faMoon,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
@@ -35,11 +38,12 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = useSelector(selectCurrentUser);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const { isDark, toggle: toggleTheme } = useDarkMode();
 
   const handleLogout = () => {
     dispatch(logout());
     setUserDropdownOpen(false);
-    navigate("/login");
+    navigate("/");
   };
 
   const handleSearchSubmit = (e) => {
@@ -60,17 +64,17 @@ const Navbar = () => {
   const navLinks = [
     { name: "Shop", path: "/customer/products", icon: faShoppingBag },
     { name: "Markets", path: "/customer/markets", icon: faStore },
-    { name: "Farmers", path: "/customer/markets", icon: faUsers },
-    { name: "Map", path: "/customer/markets", icon: faMapMarkedAlt },
-    { name: "About", path: "/about", icon: faInfoCircle },
-    { name: "Contact", path: "/contact", icon: faEnvelope },
+    { name: "Farmers", path: "/coming-soon", icon: faUsers },
+    { name: "Map", path: "/coming-soon", icon: faMapMarkedAlt },
+    { name: "About", path: "/coming-soon", icon: faInfoCircle },
+    { name: "Contact", path: "/coming-soon", icon: faEnvelope },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-forest-900 border-b border-forest-800 shadow-md text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo & Brand */}
+          {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group shrink-0">
             <div className="w-11 h-11 bg-accent-lime text-forest-950 rounded-2xl flex items-center justify-center shadow-lg shadow-accent-lime/20 group-hover:scale-105 transition-transform duration-200">
               <FontAwesomeIcon icon={faLeaf} className="text-xl text-forest-950" />
@@ -85,7 +89,7 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
             {navLinks.map((link) => (
               <NavLink
@@ -105,9 +109,20 @@ const Navbar = () => {
             ))}
           </nav>
 
-          {/* Right Action Icons & User Menu */}
+          {/* Right Actions */}
           <div className="hidden sm:flex items-center gap-3">
-            {/* Quick Search Toggle */}
+            {/* Dark/Light Toggle */}
+            <button
+              type="button"
+              id="theme-toggle"
+              onClick={toggleTheme}
+              className="w-10 h-10 rounded-xl bg-forest-800/80 hover:bg-forest-800 text-warm-cream hover:text-accent-lime flex items-center justify-center transition-colors cursor-pointer"
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+            </button>
+
+            {/* Search Toggle */}
             <div className="relative">
               {isSearchOpen ? (
                 <form onSubmit={handleSearchSubmit} className="flex items-center">
@@ -146,10 +161,10 @@ const Navbar = () => {
               title="Notifications"
             >
               <FontAwesomeIcon icon={faBell} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-accent-lime rounded-full ring-2 ring-forest-900 animate-pulse"></span>
+              <span className="absolute top-2 right-2 w-2 h-2 bg-accent-lime rounded-full ring-2 ring-forest-900 animate-pulse" />
             </button>
 
-            {/* Auth / User Section */}
+            {/* Auth / User */}
             {isAuthenticated && user ? (
               <div className="relative">
                 <button
@@ -170,7 +185,6 @@ const Navbar = () => {
                   </div>
                 </button>
 
-                {/* Dropdown Menu */}
                 {userDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-warm-surface text-forest-950 rounded-2xl shadow-xl border border-earth-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                     <div className="px-4 py-2.5 border-b border-earth-100">
@@ -219,8 +233,16 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <div className="flex md:hidden items-center gap-2">
+          {/* Mobile Hamburger */}
+          <div className="flex sm:hidden items-center gap-2">
+            <button
+              type="button"
+              id="mobile-theme-toggle"
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-xl bg-forest-800 text-warm-cream hover:text-accent-lime flex items-center justify-center transition-colors cursor-pointer"
+            >
+              <FontAwesomeIcon icon={isDark ? faSun : faMoon} className="text-sm" />
+            </button>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -232,7 +254,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-forest-950 border-t border-forest-800 px-4 pt-3 pb-6 space-y-3">
           <form onSubmit={handleSearchSubmit} className="relative mb-3">
@@ -254,9 +276,7 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium ${
-                    isActive
-                      ? "bg-forest-800 text-accent-lime font-bold"
-                      : "text-warm-cream/90 hover:bg-forest-900"
+                    isActive ? "bg-forest-800 text-accent-lime font-bold" : "text-warm-cream/90 hover:bg-forest-900"
                   }`
                 }
               >

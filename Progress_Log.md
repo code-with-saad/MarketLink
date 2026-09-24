@@ -199,6 +199,77 @@
 ### Current status
 **Phase 3 complete.**
 
+---
 
+## [2026-09-24] [Phase 3.6] [COMPLETE] — Production Hardening
 
+### What was completed
 
+**Part A — Auth Security and UX**
+- JWT token expiry reduced from 7d to 2h in both `register` and `login` controllers.
+- `axiosInstance.js`: 401 interceptor now dispatches Redux `logout()` (clearing both `token` and `user` from localStorage) and redirects to `/login?reason=expired`.
+- Login page shows a session-expired banner when redirected with `?reason=expired`.
+- Session persistence on refresh: `AppInit.jsx` wraps the app and calls `GET /api/auth/me` on mount if a token exists, rehydrating Redux auth state before routes render. Shows a loading spinner while the check is in flight.
+- `main.jsx` updated to use the new `AppInit` wrapper with ready-state gating.
+- Logout now navigates to the homepage (`/`) instead of `/login`.
+- Password eye-icon (show/hide) toggle added to all password fields: Login, Register, ForgotPassword (step 3).
+
+**Part B — Forgot Password Wizard and Rate Limiting**
+- Rate limiting via `express-rate-limit` applied to: `/api/auth/login` (10/15min), `/api/auth/register` (10/hr), `/api/auth/forgot-password` (5/15min), `/api/auth/resend-otp` (6/15min), `/api/auth/reset-password` (5/15min).
+- New `POST /api/auth/resend-otp` route with server-side 1-minute cooldown and max-3-resend enforcement using `otp_resend_count` and `otp_last_sent_at` fields on User model.
+- `ForgotPassword.jsx` completely rebuilt as a single-page 3-step wizard with step indicator bar (numbered circles, filled/unfilled, completed steps show checkmark).
+  - Step 1: Email entry. Always shows generic message (no email enumeration). Auto-advances to step 2.
+  - Step 2: OTP entry with countdown timer (`MM:SS`), resend button with 1-min client cooldown and server enforcement, resend count display, force-back-to-step-1 after 3 resends with explanation message.
+  - Step 3: New password + confirm password, both with eye-icon toggles.
+- URL uses `?step=N` for deep-linkability. Back navigation guards prevent landing on step 2/3 without prior email/OTP state.
+- `ResetPassword.jsx` deleted (merged into wizard).
+- `forgotPassword` controller now always returns a generic message regardless of whether the email exists.
+- OTP expiry checked server-side on `/reset-password` — expired OTP rejected even if code is technically correct.
+- After 3 resends server-side: session cleared (OTP, resend count), client forced back to step 1.
+- Successful password reset redirects to `/login?success=password_reset` with a success banner.
+
+**Part C — Input Validation**
+- `express-validator` validation rules added on all auth routes: register (name, email, password, role, consent), login (email, password), forgot-password (email), resend-otp (email), reset-password (email, otp, new_password).
+- Backend returns 400 with field-level `errors` array: `[{ field, message }]`.
+- Frontend `Login.jsx` and `Register.jsx`: inline field-level error text under each input, submit disabled while invalid fields present.
+
+**Part D — Error Handling and Missing Pages**
+- Global Express error handler already present with `{ success: false, message }` shape (verified consistent).
+- `NotFound.jsx` created: proper 404 page with "Go to Homepage" and "Go Back" buttons, styled to match the design system.
+- App.jsx `*` wildcard now renders `<NotFound />` instead of redirecting to `/login`.
+- CORS restricted to `CLIENT_ORIGIN` from `.env` (already was set; `CLIENT_ORIGIN=http://localhost:5173` explicitly added to `.env`).
+
+**Part E — Legal Pages and Consent**
+- `PrivacyPolicy.jsx` created: full-content page with 8 sections covering data collection, usage, retention, security, user rights, and contact.
+- `TermsOfService.jsx` created: full-content page with 10 sections covering eligibility, conduct, farmer responsibilities, orders, IP, disclaimers, and liability.
+- `ComingSoon.jsx` created: placeholder page for footer links pointing to future modules.
+- `Register.jsx`: consent checkbox added using new `Checkbox` component with links to Privacy Policy and Terms of Service (both open in new tab). Submit button disabled until checkbox is checked AND form fields are valid.
+- Backend `register` controller: rejects requests where `consent !== true` with a 400 error.
+- `checkbox.jsx` component created in `components/ui/`.
+
+**Part F — Dark/Light Mode**
+- `useDarkMode.js` hook: reads `localStorage` key `ml-theme`, falls back to `prefers-color-scheme` on first visit, applies/removes `.dark` class on `<html>`, persists choice on every toggle.
+- `index.css`: `.dark` CSS variable overrides added for all palette tokens (warm-cream, warm-surface, earth tones, shadcn tokens). Body gets `transition: background-color 0.2s ease` for smooth switching.
+- `Navbar.jsx`: dark/light toggle button (FontAwesome `faSun` / `faMoon`) added to both desktop and mobile header.
+
+**Part G — Footer and UI Cleanup**
+- `Home.jsx`: "Design System Status Indicators" block removed. Unused `StatusBadge`, `CardContent` imports removed.
+- `Footer.jsx`: All dead `href="#"` links replaced. Links to future modules now point to `/coming-soon`. Privacy Policy and Terms of Service links added to the bottom bar.
+- Navbar dead links (Farmers, Map, About, Contact) now point to `/coming-soon` instead of wrong customer routes.
+
+**Part H — Guest Route Guard**
+- `GuestRoute` wrapper added in `App.jsx`: if an authenticated user navigates to `/login` or `/register` (including via browser back button), they are redirected to their role's dashboard (`/farmer/dashboard`, `/admin/dashboard`, or `/customer/dashboard`).
+- Login and Register pages also have a `useEffect` guard for runtime re-checks.
+
+### Files changed
+**New files:** `AppInit.jsx`, `NotFound.jsx`, `PrivacyPolicy.jsx`, `TermsOfService.jsx`, `ComingSoon.jsx`, `checkbox.jsx`, `useDarkMode.js`
+**Modified files:** `authController.js`, `authRoutes.js`, `authApi.js`, `axiosInstance.js`, `main.jsx`, `App.jsx`, `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `Navbar.jsx`, `Footer.jsx`, `Home.jsx`, `index.css`, `server/.env`
+**Deleted files:** `ResetPassword.jsx`
+
+### Test results
+- Build: `npm run build` exits 0 with zero errors (only chunk size warning).
+- Backend: server starts on port 5000, MongoDB connected.
+- Frontend: Vite starts on port 5173 with zero compile errors.
+
+### Current status
+**Phase 3.6 complete.**

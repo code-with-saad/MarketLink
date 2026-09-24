@@ -70,6 +70,38 @@
     --ring: oklch(0.4 0.1 145);
     --radius: 0.75rem;
   }
+
+  .dark {
+    --warm-cream: #111b15;
+    --warm-cream-dark: #182210;
+    --warm-surface: #1a2b1f;
+    --warm-surface-muted: #1f3228;
+
+    --earth-900: #e8e0d8;
+    --earth-700: #c4bdb5;
+    --earth-500: #9a9290;
+    --earth-300: #4a4340;
+    --earth-100: #2c2522;
+
+    --background: oklch(0.12 0.025 140);
+    --foreground: oklch(0.92 0.02 85);
+    --card: oklch(0.15 0.03 140);
+    --card-foreground: oklch(0.92 0.02 85);
+    --popover: oklch(0.15 0.03 140);
+    --popover-foreground: oklch(0.92 0.02 85);
+    --primary: oklch(0.75 0.18 125);
+    --primary-foreground: oklch(0.12 0.04 140);
+    --secondary: oklch(0.22 0.04 140);
+    --secondary-foreground: oklch(0.88 0.02 85);
+    --muted: oklch(0.2 0.03 140);
+    --muted-foreground: oklch(0.6 0.02 85);
+    --accent: oklch(0.75 0.18 125);
+    --accent-foreground: oklch(0.12 0.04 140);
+    --destructive: oklch(0.55 0.22 25);
+    --border: oklch(0.25 0.03 140);
+    --input: oklch(0.25 0.03 140);
+    --ring: oklch(0.75 0.18 125);
+  }
 }
 
 @theme inline {
@@ -124,6 +156,7 @@
     background-color: var(--warm-cream);
     color: var(--earth-900);
     font-family: var(--font-sans);
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
   h1, h2, h3, .font-serif-heading {
     font-family: var(--font-serif);

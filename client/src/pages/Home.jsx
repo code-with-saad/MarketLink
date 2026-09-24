@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { StatusBadge } from "@/components/ui/status-badge";
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { SearchInput } from "@/components/ui/search-input";
 import { getProducts } from "@/api/customerApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -218,27 +217,9 @@ const Home = () => {
             </Card>
           )}
         </div>
-
-        {/* Order Status Demo Showcase */}
-        <Card className="p-6 sm:p-8 bg-warm-surface border-earth-200">
-          <div className="space-y-4">
-            <h3 className="font-serif text-xl font-bold text-forest-950">Design System Status Indicators</h3>
-            <p className="text-sm text-earth-700">
-              Clear visual statuses utilized across customer order tracking, farmer fulfillment, and admin oversight:
-            </p>
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <StatusBadge status="placed" label="Placed (Customer Action)" />
-              <StatusBadge status="accepted" label="Accepted (Farmer Action)" />
-              <StatusBadge status="ready" label="Ready for Pickup" />
-              <StatusBadge status="completed" label="Completed" />
-              <StatusBadge status="cancelled" label="Cancelled (Before Cutoff)" />
-            </div>
-          </div>
-        </Card>
       </div>
     </Layout>
   );
 };
 
 export default Home;
-

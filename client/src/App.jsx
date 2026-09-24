@@ -1,11 +1,18 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated, selectCurrentUser } from './store/slices/authSlice';
 
 // Shared pages
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+import NotFound from './pages/NotFound';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import ComingSoon from './pages/ComingSoon';
+
+// Protected route guard
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Customer pages
@@ -24,20 +31,39 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminFarmers from './pages/admin/AdminFarmers';
 import AdminMarkets from './pages/admin/AdminMarkets';
 
+const getDashboardPath = (role) => {
+  if (role === 'farmer') return '/farmer/dashboard';
+  if (role === 'admin') return '/admin/dashboard';
+  return '/customer/dashboard';
+};
+
+// GuestRoute: redirects authenticated users away from auth pages
+const GuestRoute = ({ children }) => {
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectCurrentUser);
+
+  if (isAuthenticated && user) {
+    return <Navigate to={getDashboardPath(user.role)} replace />;
+  }
+  return children;
+};
+
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Landing & Showcase */}
+        {/* Public Landing */}
         <Route path="/" element={<Home />} />
 
-        {/* Public Auth routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* Legal / static pages */}
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/coming-soon" element={<ComingSoon />} />
+
+        {/* Auth routes -- redirect authenticated users away */}
+        <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
+        <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-
-
 
         {/* Protected Customer section */}
         <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
@@ -61,12 +87,11 @@ function App() {
           <Route path="/admin/markets" element={<AdminMarkets />} />
         </Route>
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
