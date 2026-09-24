@@ -277,15 +277,15 @@
 
 ---
 
-## [2026-09-24] [Bug Fix] [COMPLETE] — Dark Mode Contrast Fix
+## [2026-09-24] [UX Feature] [COMPLETE] — Registration Legal Document Dialog Modals
 
-### Cause
-In `client/src/index.css`, the `.dark` class redefined `--warm-cream`, `--warm-surface`, `--earth-*`, and shadcn tokens, but failed to redefine the `--forest-*` palette variables (`--forest-950` through `--forest-500`). When components used `text-forest-950/900/800` directly for headings or body text, light mode produced dark green text on cream backgrounds (high contrast), but dark mode produced dark green text on dark backgrounds (`#111b15`), rendering headings nearly unreadable.
-
-### Fix Applied
-1. In `client/src/index.css`, added dark-mode-aware redefinitions for `--forest-950` through `--forest-500` inside the `.dark` block (mapping to light green hues `#f0fdf4` to `#22c55e`).
-2. Preserved fixed forest colors where intended for theme-independent elements (e.g. solid dark-green cards/navbars with fixed white/lime text).
+### What was completed
+1. **Shadcn Dialog Component**: Added `client/src/components/ui/dialog.jsx` using `@base-ui/react/dialog` primitive.
+2. **Single Source of Truth**: Created `client/src/components/LegalContent.jsx` containing `PrivacyPolicyContent` and `TermsOfServiceContent`. Refactored standalone `PrivacyPolicy.jsx` and `TermsOfService.jsx` pages to consume these shared components while preserving their permalink routes.
+3. **Register Page Integration**: Replaced direct navigation links (`/privacy-policy`, `/terms-of-service`) on `Register.jsx` with modal trigger buttons that open an in-page `Dialog`.
+4. **Form State Preservation**: The modal allows full scrolling, keyboard `Escape` closing, overlay clicking, and close button (`X`) closing without navigating away or resetting any form inputs typed by the user.
+5. **Dark Mode Compliance**: Styled `Dialog` and content using theme-aware tokens (`bg-warm-surface`, `text-foreground`, `border-earth-200`) so modals render cleanly in both light and dark modes.
 
 ### Verification
 - `npm run build` completed cleanly with zero syntax/compilation errors.
-- Visual inspection across Home, dashboards, Footer, buttons, cards, search input, and legal pages in both light and dark mode confirmed crisp readability and WCAG-compliant contrast.
+- Automated Playwright test (`test_register_modal.js`) verified that filling inputs, opening/scrolling Privacy Policy, closing, opening/closing Terms of Service retains all typed form data perfectly.

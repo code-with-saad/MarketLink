@@ -12,6 +12,14 @@ import {
 } from '../store/slices/authSlice';
 import { Button } from '../components/ui/button';
 import { Checkbox } from '../components/ui/checkbox';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../components/ui/dialog';
+import { PrivacyPolicyContent, TermsOfServiceContent } from '../components/LegalContent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faLeaf,
@@ -27,6 +35,8 @@ import {
   faTractor,
   faEye,
   faEyeSlash,
+  faShieldAlt,
+  faFileContract,
 } from '@fortawesome/free-solid-svg-icons';
 
 const getDashboardPath = (role) => {
@@ -49,6 +59,7 @@ const Register = () => {
   const [consent, setConsent] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
   const [submitError, setSubmitError] = useState(null);
+  const [activeModal, setActiveModal] = useState(null); // 'privacy' | 'terms' | null
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -330,23 +341,21 @@ const Register = () => {
               />
               <label htmlFor="reg-consent" className="text-sm text-gray-600 cursor-pointer leading-snug">
                 I agree to the{' '}
-                <Link
-                  to="/privacy-policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-emerald-600 hover:underline"
+                <button
+                  type="button"
+                  onClick={() => setActiveModal('privacy')}
+                  className="font-semibold text-emerald-600 hover:underline cursor-pointer focus:outline-none"
                 >
                   Privacy Policy
-                </Link>
+                </button>
                 {' '}and{' '}
-                <Link
-                  to="/terms-of-service"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-emerald-600 hover:underline"
+                <button
+                  type="button"
+                  onClick={() => setActiveModal('terms')}
+                  className="font-semibold text-emerald-600 hover:underline cursor-pointer focus:outline-none"
                 >
                   Terms of Service
-                </Link>
+                </button>
                 .
               </label>
             </div>
@@ -379,6 +388,33 @@ const Register = () => {
             Sign In
           </Link>
         </div>
+
+        {/* Legal Document Dialog Modal */}
+        <Dialog open={activeModal !== null} onOpenChange={(open) => !open && setActiveModal(null)}>
+          <DialogContent showCloseButton={true} className="sm:max-w-2xl max-h-[85vh] flex flex-col p-0 overflow-hidden bg-warm-surface border border-earth-200">
+            <DialogHeader className="p-6 pb-4 border-b border-earth-100 flex flex-row items-center gap-3">
+              <div className="w-10 h-10 bg-forest-900 text-accent-lime rounded-xl flex items-center justify-center shrink-0">
+                <FontAwesomeIcon icon={activeModal === 'privacy' ? faShieldAlt : faFileContract} />
+              </div>
+              <div>
+                <DialogTitle className="font-serif text-xl font-bold text-foreground">
+                  {activeModal === 'privacy' ? 'Privacy Policy' : 'Terms of Service'}
+                </DialogTitle>
+                <DialogDescription className="text-xs text-earth-500 mt-0.5">
+                  Last updated: September 2026
+                </DialogDescription>
+              </div>
+            </DialogHeader>
+            <div className="p-6 overflow-y-auto max-h-[60vh] space-y-4">
+              {activeModal === 'privacy' ? <PrivacyPolicyContent /> : <TermsOfServiceContent />}
+            </div>
+            <div className="p-4 border-t border-earth-100 bg-warm-cream flex justify-end">
+              <Button variant="secondary" size="sm" onClick={() => setActiveModal(null)}>
+                Close
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
