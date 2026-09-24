@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated, selectCurrentUser } from './store/slices/authSlice';
@@ -48,9 +49,20 @@ const GuestRoute = ({ children }) => {
   return children;
 };
 
+import { setNavigate } from './utils/navigation';
+
+function NavigateSetter() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    setNavigate(navigate);
+  }, [navigate]);
+  return null;
+}
+
 function App() {
   return (
     <Router>
+      <NavigateSetter />
       <Routes>
         {/* Public Landing */}
         <Route path="/" element={<Home />} />

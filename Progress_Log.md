@@ -289,3 +289,23 @@
 ### Verification
 - `npm run build` completed cleanly with zero syntax/compilation errors.
 - Automated Playwright test (`test_register_modal.js`) verified that filling inputs, opening/scrolling Privacy Policy, closing, opening/closing Terms of Service retains all typed form data perfectly.
+
+---
+
+## [2026-09-24] [Bug Fix] [COMPLETE] — 401 Interceptor Public Route Unconditional Redirection
+
+### Cause
+In `client/src/api/axiosInstance.js`, the response interceptor previously handled all `401` HTTP statuses by unconditionally dispatching `logout()` and triggering `window.location.href = '/login?reason=expired'`. On initial app load (`AppInit.jsx`), `getMe()` (`GET /api/auth/me`) checks for session validity. If `localStorage` contained an invalid/expired token or if an unauthenticated request returned `401` on public pages like `/`, the interceptor forcibly redirected anonymous users to `/login?reason=expired`.
+
+### Fix Applied
+1. **Token Check**: In `axiosInstance.js`, the 401 handler verifies `Boolean(localStorage.getItem('token'))` prior to clearing credentials. If no token was present, credentials are cleared silently without triggering a redirect.
+2. **Protected Route Guarding**: Redirection to `/login?reason=expired` only fires if the request occurred while the user was on a protected path (`/customer/*`, `/farmer/*`, or `/admin/*`). Unauthenticated or stale 401s on public routes (`/`, `/privacy-policy`, `/terms-of-service`, `/coming-soon`) clear auth state silently and keep the user on their active page.
+3. **SPA Navigation Integration**: Created `client/src/utils/navigation.js` and registered `NavigateSetter` in `App.jsx`. `axiosInstance.js` uses `navigateTo('/login?reason=expired')` for seamless React Router SPA transitions without reloading the page.
+4. **ProtectedRoute Query Preservation**: Updated `ProtectedRoute.jsx` to append `?reason=expired` when redirecting unauthenticated users from protected pages.
+
+### Verification
+- Automated Playwright suite (`test_401_interceptor.js`) verified:
+  - Visiting `/` anonymously: stays on `/` (exits 0).
+  - Visiting `/` with an invalid token: token silently purged, stays on `/` (exits 0).
+  - Visiting `/customer/dashboard` with an invalid token: redirects seamlessly to `/login?reason=expired`.
+- `npm run build` exited cleanly with 0 errors.

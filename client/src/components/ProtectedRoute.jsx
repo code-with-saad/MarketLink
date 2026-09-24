@@ -14,7 +14,9 @@ const ProtectedRoute = ({ allowedRoles = [] }) => {
   const user = useSelector(selectCurrentUser);
 
   if (!token) {
-    return <Navigate to="/login" replace />;
+    const search = window.location.search;
+    const hasReason = search.includes('reason=expired');
+    return <Navigate to={hasReason ? `/login${search}` : `/login?reason=expired`} replace />;
   }
 
   // If user object is not yet loaded, or roles are specified and user's role is not included
