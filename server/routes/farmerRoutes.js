@@ -7,7 +7,10 @@ const {
   getProducts,
   createProduct,
   updateProduct,
+  updateProductStatus,
   deleteProduct,
+  updateWeeklyTemplateSettings,
+  applyWeeklyTemplate,
   getOrders,
   updateOrderStatus,
   getInsights,
@@ -29,10 +32,18 @@ router.put('/profile', updateProfile);
 router.get('/products', requireActiveUser, getProducts);
 // POST /api/farmer/products
 router.post('/products', requireActiveUser, createProduct);
+// PUT /api/farmer/products/:id/status (quick status change)
+router.put('/products/:id/status', requireActiveUser, updateProductStatus);
 // PUT /api/farmer/products/:id
 router.put('/products/:id', requireActiveUser, updateProduct);
 // DELETE /api/farmer/products/:id
 router.delete('/products/:id', requireActiveUser, deleteProduct);
+
+// Weekly template endpoints
+// PUT /api/farmer/weekly-template (batch update weekly template values or settings)
+router.put('/products/weekly-template', requireActiveUser, updateWeeklyTemplateSettings);
+// POST /api/farmer/apply-weekly-template (apply template to stock)
+router.post('/products/apply-weekly-template', requireActiveUser, applyWeeklyTemplate);
 
 // Orders & insights routes (blocked if pending or suspended)
 // GET /api/farmer/orders

@@ -8,6 +8,7 @@ const farmerProfileSchema = new mongoose.Schema({
   pickup_windows: { type: String },
   latitude: { type: Number },
   longitude: { type: Number },
+  auto_apply_weekly_template: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('FarmerProfile', farmerProfileSchema);

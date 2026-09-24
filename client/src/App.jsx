@@ -22,10 +22,10 @@ import Markets from './pages/customer/Markets';
 import Products from './pages/customer/Products';
 import CustomerOrders from './pages/customer/CustomerOrders';
 
-// Farmer pages
 import FarmerDashboard from './pages/farmer/FarmerDashboard';
 import FarmerStock from './pages/farmer/FarmerStock';
 import FarmerOrders from './pages/farmer/FarmerOrders';
+import FarmerProfile from './pages/farmer/FarmerProfile';
 
 // Admin pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -90,6 +90,10 @@ function App() {
           <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
           <Route path="/farmer/stock" element={<FarmerStock />} />
           <Route path="/farmer/orders" element={<FarmerOrders />} />
+          <Route path="/farmer/profile" element={<FarmerProfile />} />
+          <Route path="/farmer/markets" element={<FarmerProfile />} />
+          <Route path="/farmer/reviews" element={<FarmerProfile />} />
+          <Route path="/farmer/notifications" element={<FarmerProfile />} />
         </Route>
 
         {/* Protected Admin section */}

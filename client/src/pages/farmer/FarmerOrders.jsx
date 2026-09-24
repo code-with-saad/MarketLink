@@ -1,10 +1,10 @@
-import Layout from "@/components/layout/Layout";
+import FarmerLayout from "@/components/layout/FarmerLayout";
 import { Card } from "@/components/ui/card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboardList } from "@fortawesome/free-solid-svg-icons";
 
 const FarmerOrders = () => (
-  <Layout>
+  <FarmerLayout>
     <div className="space-y-6">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 bg-forest-900 text-accent-lime rounded-xl flex items-center justify-center">
@@ -20,7 +20,7 @@ const FarmerOrders = () => (
         <p className="text-sm font-medium text-earth-700">Order management workflows will appear here in upcoming phases.</p>
       </Card>
     </div>
-  </Layout>
+  </FarmerLayout>
 );
 
 export default FarmerOrders;

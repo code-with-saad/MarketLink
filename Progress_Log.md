@@ -309,3 +309,38 @@ In `client/src/api/axiosInstance.js`, the response interceptor previously handle
   - Visiting `/` with an invalid token: token silently purged, stays on `/` (exits 0).
   - Visiting `/customer/dashboard` with an invalid token: redirects seamlessly to `/login?reason=expired`.
 - `npm run build` exited cleanly with 0 errors.
+
+---
+
+## [2026-09-24] [Phase 4] [COMPLETE] — Farmer Module (Stock & Profile Management)
+
+### What was completed
+
+**Backend — `/api/farmer` API Routes & Controllers**
+- Added `weekly_template_quantity` field to `Product` model schema and `auto_apply_weekly_template` field to `FarmerProfile` model schema.
+- `GET /api/farmer/profile` & `PUT /api/farmer/profile`: View and update farmer stall name, operating days, pickup windows, and latitude/longitude.
+- `GET /api/farmer/products`, `POST /api/farmer/products`, `PUT /api/farmer/products/:id`, `DELETE /api/farmer/products/:id`: Full product CRUD. All endpoints protected with `requireActiveUser` (blocked with a 403 error for pending or suspended farmers).
+- `PUT /api/farmer/products/:id/status`: Quick status toggle (`available`, `sold_out`, `unavailable`) without full form edit.
+- `PUT /api/farmer/products/weekly-template`: Batch update weekly template quantities and toggle `auto_apply_weekly_template`.
+- `POST /api/farmer/products/apply-weekly-template`: Resets `quantity_available` to `weekly_template_quantity` for all farmer products.
+
+**Frontend — Farmer Dashboard Layout & Views**
+- `FarmerLayout.jsx`: Responsive layout with persistent left sidebar containing farmer navigation (`Dashboard & Insights`, `Pre-orders`, `Weekly Stock`, `Markets & Pickup`, `Reviews`, `Stall Profile`, `Notifications`) and approval status badge.
+- **Pending Approval Protection**: If `user.status === 'pending'`, a prominent warning banner is rendered explaining that the stall account is awaiting admin approval, and product mutation buttons are cleanly disabled.
+- `FarmerStock.jsx`: Weekly stock management view containing:
+  - Top "Recurring weekly stock template" control panel with auto-apply toggle and "Apply Now" instant reset button.
+  - Interactive table displaying product image, name, category, price/unit, inline-editable in-stock quantity, inline-editable weekly template quantity, status dropdown selector, and edit/delete row action buttons.
+  - Shared `Dialog` modal for adding and editing harvest products.
+- `FarmerProfile.jsx`: Full stall profile management view for updating farm name, operating day chips, pickup window policy, and map coordinates.
+
+**Seed Script**
+- Created `server/scripts/seedFarmerData.js` to seed an approved active farmer (`farmer.active@marketlink.local`) with sample products and a pending farmer (`farmer.pending@marketlink.local`) for local testing.
+
+### TRD Section 8 & Design System Compliance
+- Adhered strictly to TRD Section 8: all text elements use theme-aware semantic tokens (`text-foreground`, `text-earth-700`, `text-primary`), dark mode tested and verified, input validation enforced, zero emojis or em dashes used, and all icon references use FontAwesome.
+
+### Verification
+- `npm run build` executed cleanly with 0 compilation errors.
+- Automated Playwright suite (`test_phase4_farmer.js`) verified:
+  - Approved farmer login -> weekly stock table rendering, inline quantity updates, status toggling, and "Apply Now" template reset.
+  - Pending farmer login -> pending warning banner visible, product creation buttons disabled, backend 403 authorization guard active.

@@ -9,7 +9,10 @@ export const updateProfile = (data) => api.put('/farmer/profile', data);
 export const getProducts = () => api.get('/farmer/products');
 export const createProduct = (data) => api.post('/farmer/products', data);
 export const updateProduct = (id, data) => api.put(`/farmer/products/${id}`, data);
+export const updateProductStatus = (id, data) => api.put(`/farmer/products/${id}/status`, data);
 export const deleteProduct = (id) => api.delete(`/farmer/products/${id}`);
+export const updateWeeklyTemplate = (data) => api.put('/farmer/products/weekly-template', data);
+export const applyWeeklyTemplate = () => api.post('/farmer/products/apply-weekly-template');
 
 // Orders
 export const getOrders = () => api.get('/farmer/orders');
